@@ -13,18 +13,18 @@ router.route('/').post(async (req, res) => {
     .then(account => {
       if (!account) {
         bcrypt.hash(password, saltRouds, async (err, hash) => {
-          if (err) console.log('Error ' + err);
+          if (err) console.log(`Error ${err}`);
           else {
             newAccount.password = hash;
             await newAccount.save()
               .then(() => res.json(newAccount))
-              .catch(err => res.status(400).json('Error ' + err));
+              .catch(err => res.status(400).json(`Error ${err}`));
           }
         });
       }
       else res.json('Account already exists');
     })
-    .catch(err => res.status(400).json('Error ' + err));
+    .catch(err => res.status(400).json(`Error ${err}`));
 });
 
 module.exports = router;

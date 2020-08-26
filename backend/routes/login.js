@@ -17,7 +17,7 @@ router.route('/').post(async (req, res) => {
           password,
           account.password,
           async (err, result) => {
-            if (err) console.log('Error ' + err);
+            if (err) console.log(`Error ${err}`);
             else if (result === true) {
               const { id, name } = account;
               const payload = { id, name };
@@ -28,7 +28,7 @@ router.route('/').post(async (req, res) => {
                 secret,
                 { expiresIn: 3600 },
                 (err, token) => {
-                  if (err) console.log('Error ' + err);
+                  if (err) console.log(`Error ${err}`);
                   res.json({
                     success: true,
                     token: 'Bearer ' + token,
@@ -41,7 +41,7 @@ router.route('/').post(async (req, res) => {
         )
       }
     })
-    .catch(err => res.status(400).json('Error ' + err));
+    .catch(err => res.status(400).json(`Error ${err}`));
 });
 
 module.exports = router;
