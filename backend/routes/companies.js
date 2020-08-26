@@ -4,7 +4,7 @@ let Company = require('../models/company.model');
 router.route('/').get((req, res) =>
  Company.find()
   .then(company => res.json(company))
-  .catch(err => res.status(400).json('Error: ' + err))
+  .catch(err => res.status(400).json(`Error ${err}`))
 );
 
 router.route('/add').post((req, res) => {
