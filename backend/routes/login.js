@@ -7,9 +7,9 @@ let key = require('../configs/key')
 
 router.route('/').post(async (req, res) => {
   const { body } = req;
-  const { name, password } = body;
+  const { username, password } = body;
 
-  await Account.findOne({ name })
+  await Account.findOne({ username })
     .then(account => {
       if (!account) res.json('Account not exist');
       else {
@@ -19,8 +19,8 @@ router.route('/').post(async (req, res) => {
           async (err, result) => {
             if (err) console.log(`Error ${err}`);
             else if (result === true) {
-              const { id, name } = account;
-              const payload = { id, name };
+              const { id, username, fullname, email } = account;
+              const payload = { id, username };
               const { secret } = key;
 
               jsonwt.sign(
@@ -31,7 +31,11 @@ router.route('/').post(async (req, res) => {
                   if (err) console.log(`Error ${err}`);
                   res.json({
                     success: true,
-                    token: 'Bearer ' + token,
+                    id,
+                    username,
+                    fullname,
+                    email,
+                    token: `Bearer ${token}`,
                   })
                 }
               );

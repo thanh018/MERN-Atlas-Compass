@@ -6,10 +6,10 @@ const saltRouds = 10;
 
 router.route('/').post(async (req, res) => {
   const { body } = req;
-  const { name, password } = body;
-  const newAccount = new Account({ name, password });
+  const { username, password, fullname, email } = body;
+  const newAccount = new Account({ username, password, fullname, email });
 
-  await Account.findOne({ name })
+  await Account.findOne({ username })
     .then(account => {
       if (!account) {
         bcrypt.hash(password, saltRouds, async (err, hash) => {
@@ -17,7 +17,10 @@ router.route('/').post(async (req, res) => {
           else {
             newAccount.password = hash;
             await newAccount.save()
-              .then(() => res.json(newAccount))
+              .then(() => {
+                const { id, username, fullname, email } = newAccount;
+                res.json({ id, username, fullname, email })
+              })
               .catch(err => res.status(400).json(`Error ${err}`));
           }
         });
