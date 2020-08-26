@@ -32,13 +32,15 @@ const signupRouter = require('./routes/signup');
 const loginRouter = require('./routes/login');
 const profileRouter = require('./routes/profile');
 const companyRouter = require('./routes/companies');
+const uploadRouter = require('./routes/upload');
 
 app.use('/exercises', exercisesRouter);
 app.use('/users', usersRouter);
 app.use('/signup', signupRouter);
 app.use('/login', loginRouter);
 app.use('/profile', profileRouter);
-app.use('/companies', companyRouter);
+app.use('/company', companyRouter);
+app.use('/upload', uploadRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
