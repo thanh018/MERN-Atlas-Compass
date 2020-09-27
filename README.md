@@ -3,6 +3,7 @@
 --- 1. cd backend ---
 - npm install express cors mongoose dotenv
 - npm install nodemon --save-dev
+- npm install formidable@latest
 - nodemon server
 
 

@@ -1,3 +1,5 @@
+const { SECRET_KEY } = require('../constants/common');
+
 module.exports = {
-	secret: 'mysecretkey'
+	secret: SECRET_KEY
 };

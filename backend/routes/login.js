@@ -3,7 +3,14 @@ const bcrypt = require('bcrypt');
 const jsonwt = require('jsonwebtoken');
 const router = require('express').Router();
 let Account = require('../models/account.model');
-let key = require('../configs/key')
+let key = require('../configs/key');
+const { 
+  ERROR,
+  BEARER,
+  EXPIRED_TIME,
+  WRONG_PASSWORD,
+  ACCOUNT_NOT_EXIST
+} = require('../constants/common');
 
 router.route('/').post(async (req, res) => {
   const { body } = req;
@@ -11,13 +18,13 @@ router.route('/').post(async (req, res) => {
 
   await Account.findOne({ username })
     .then(account => {
-      if (!account) res.json('Account not exist');
+      if (!account) res.json(ACCOUNT_NOT_EXIST);
       else {
         bcrypt.compare(
           password,
           account.password,
           async (err, result) => {
-            if (err) console.log(`Error ${err}`);
+            if (err) console.log(`${ERROR} ${err}`);
             else if (result === true) {
               const { id, username, fullname, email } = account;
               const payload = { id, username };
@@ -26,21 +33,21 @@ router.route('/').post(async (req, res) => {
               jsonwt.sign(
                 payload,
                 secret,
-                { expiresIn: 3600 },
+                { expiresIn: EXPIRED_TIME },
                 (err, token) => {
-                  if (err) console.log(`Error ${err}`);
+                  if (err) console.log(`${ERROR} ${err}`);
                   res.json({
                     success: true,
                     id,
                     username,
                     fullname,
                     email,
-                    token: `Bearer ${token}`,
+                    token: `${BEARER} ${token}`,
                   })
                 }
               );
             }
-            else res.json('Account unauthorized access');
+            else res.json(WRONG_PASSWORD);
           }
         )
       }

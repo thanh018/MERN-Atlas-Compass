@@ -15,9 +15,15 @@ router.route('/').post((req, res) => {
     })
   );
 
-  form.on('error', () => console.log('An error occurred'));
+  form.on('error', () => {
+    console.log('An error occurred')
+    return res.json('An error occurred');
+  });
 
-  form.on('end', () => console.log('File was uploaded successfully'));
+  form.on('end', () => {
+    console.log('File was uploaded successfully')
+    return res.json('File was uploaded successfully');
+  });
 
   form.parse(req);
 });
